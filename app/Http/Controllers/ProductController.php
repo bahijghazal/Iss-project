@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProductRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\AuditLogHelper;
 
+
 class ProductController extends Controller
 {
     public function __construct() {
@@ -32,7 +33,7 @@ class ProductController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $data['image'] = $request->file('image')->store('products', 'private');
         }
 
         $product = Product::create($data);
@@ -41,6 +42,7 @@ class ProductController extends Controller
             'product_id' => $product->id,
             'name' => $product->name,
         ]);
+       
 
         return redirect()->route('products.index')->with('success', 'Product created!');
     }
@@ -74,8 +76,33 @@ class ProductController extends Controller
 
 
     public function destroy(Product $product) {
+        AuditLogHelper::log('product_deleted', [
+        'product_id' => $product->id,
+        'name' => $product->name,
+    ]);
+
         $product->delete();
 
         return redirect()->route('products.index')->with('success', 'Product deleted!');
+
     }
+
+    public function displayImage($filename)
+    {
+        $path = "products/" . $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            AuditLogHelper::log('file_missing', [
+            'filename' => $filename
+        ]);
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+        $type = Storage::disk('private')->mimeType($path);
+
+        return response($file)->header('Content-Type', $type);
+    }
+
 }
+

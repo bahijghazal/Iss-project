@@ -33,7 +33,7 @@
                                     <!-- Product Image -->
                                     <div class="col-md-2 col-3 mb-3 mb-md-0">
                                         @if($order->product->image)
-                                            <img src="{{ asset('storage/' . $order->product->image) }}"
+                                            <img src="{{ route('products.image', basename($order->product->image)) }}"
                                                  alt="{{ $order->product->name }}"
                                                  class="img-fluid rounded"
                                                  style="height: 80px; object-fit: cover;">
@@ -43,7 +43,6 @@
                                             </div>
                                         @endif
                                     </div>
-
 
                                     <!-- Order Details -->
                                     <div class="col-md-4 col-9 mb-3 mb-md-0">
@@ -74,6 +73,7 @@
                                             <i class="bi bi-check-circle me-1"></i>Completed
                                         </span>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -95,33 +95,6 @@
                     <a href="{{ route('orders.create') }}" class="btn btn-primary btn-lg">
                         <i class="bi bi-cart-plus me-2"></i>Place Your First Order
                     </a>
-                </div>
-            </div>
-        @endif
-
-        <!-- Order Summary Stats -->
-        @if($orders->count() > 0)
-            <div class="row g-4 mt-4">
-                <div class="col-md-4">
-                    <div class="card border-0 bg-primary bg-opacity-10 text-center p-4">
-                        <i class="bi bi-bag-check text-primary mb-2" style="font-size: 2rem;"></i>
-                        <h3 class="fw-bold text-primary mb-0">{{ $orders->total() }}</h3>
-                        <small class="text-muted">Total Orders</small>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card border-0 bg-success bg-opacity-10 text-center p-4">
-                        <i class="bi bi-currency-dollar text-success mb-2" style="font-size: 2rem;"></i>
-                        <h3 class="fw-bold text-success mb-0">${{ number_format($orders->sum('total_price'), 2) }}</h3>
-                        <small class="text-muted">Total Spent</small>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card border-0 bg-info bg-opacity-10 text-center p-4">
-                        <i class="bi bi-box text-info mb-2" style="font-size: 2rem;"></i>
-                        <h3 class="fw-bold text-info mb-0">{{ $orders->sum('quantity') }}</h3>
-                        <small class="text-muted">Items Ordered</small>
-                    </div>
                 </div>
             </div>
         @endif

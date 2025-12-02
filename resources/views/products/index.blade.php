@@ -29,7 +29,7 @@
                     <div class="card h-100 shadow-sm border-0 product-card position-relative">
                         <!-- Product Image -->
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}"
+                            <img src="{{ route('products.image', basename($product->image)) }}"
                                  class="card-img-top"
                                  alt="{{ $product->name }}"
                                  style="height: 200px; object-fit: cover;">
@@ -62,10 +62,12 @@
                                    class="btn btn-outline-primary btn-sm flex-grow-1">
                                     <i class="bi bi-pencil me-1"></i>Edit
                                 </a>
+
                                 <form action="{{ route('products.destroy', $product) }}" method="POST" class="flex-grow-1">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                                    <button type="submit"
+                                            class="btn btn-outline-danger btn-sm w-100"
                                             onclick="return confirm('Are you sure you want to delete this product?')">
                                         <i class="bi bi-trash me-1"></i>Delete
                                     </button>

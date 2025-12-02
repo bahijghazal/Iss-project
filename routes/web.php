@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use App\Http\Controllers\AuditController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,6 +28,14 @@ Route::group(['middleware' => ['auth', RoleMiddleware::class . ':admin']], funct
 Route::middleware('auth')->group(function () {
     Route::resource('orders', OrderController::class)->only(['index','create','store','show']);
 });
+
+Route::get('/products/image/{filename}', [ProductController::class, 'displayImage'])
+    ->middleware('auth')
+    ->name('products.image');
+
+Route::get('/audit/logs', [AuditController::class, 'index'])
+    ->middleware('auth')
+    ->name('audit.logs');
 
 
 
