@@ -22,12 +22,16 @@
                     <div class="card h-100 shadow-sm border-0 product-card position-relative">
                         <!-- Product Image -->
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                            <img src="{{ route('products.image', basename($product->image)) }}"
+                                 alt="{{ $product->name }}"
+                                 class="img-fluid rounded"
+                                 style="height: 80px; object-fit: cover;">
                         @else
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 80px;">
+                                <i class="bi bi-box-seam text-muted" style="font-size: 2rem;"></i>
                             </div>
                         @endif
+
 
                         <!-- Stock Badge -->
                         @if($product->stock > 0)

@@ -14,16 +14,13 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run()
     {
-        // Create roles
         $adminRole = Role::create(['name' => 'admin']);
         $userRole = Role::create(['name' => 'user']);
 
-        // Create permissions
         Permission::create(['name' => 'manage orders']);
         Permission::create(['name' => 'manage products']);
 
-        // Assign permissions to roles
         $adminRole->givePermissionTo(['manage orders', 'manage products']);
-        $userRole->givePermissionTo(['manage orders']); // regular user only manages their own orders
+        $userRole->givePermissionTo(['manage orders']);
     }
 }
